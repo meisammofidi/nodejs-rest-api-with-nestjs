@@ -10,24 +10,26 @@ export class ProductsService {
   constructor(
     @InjectModel('Product') private readonly productModel: Model<Product>,
   ) {}
-  async create(createProductDto: CreateProductDto) : Promise<Product> {
-    const newProduct = new this.productModel(createProductDto)
-    return await newProduct.save()
+  async create(createProductDto: CreateProductDto): Promise<Product> {
+    const newProduct = new this.productModel(createProductDto);
+    return await newProduct.save();
   }
 
-  async findAll() : Promise<Product[]> {
-    return await this.productModel.find()
+  async findAll(): Promise<Product[]> {
+    return await this.productModel.find();
   }
 
-  async findOne(id: number): Promise<Product> {
-    return this.productModel.findOne({_id : id})
+  async findOne(id: string): Promise<Product> {
+    return await this.productModel.findOne({ _id: id });
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(id: string, updateProductDto: UpdateProductDto) {
+    return await this.productModel.findOneAndUpdate({ _id: id }, updateProductDto, {
+      new: true,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  async remove(id: string) {
+    return await this.productModel.findOneAndRemove({ _id: id });
   }
 }
